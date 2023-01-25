@@ -27,7 +27,7 @@
 
     <div id="app">
         <label for="descripcio">Descripció</label>
-        <input id="descripcio" class="form-control" type="text" v-model="descripcio" />
+        <input id="descripcio" class="form-control" type="text" v-model="descripcio" maxlength="100" />
         <label for="prior">Prioritat</label>
         <select id="prior" class="form-select" v-model="prioritat">
             <option v-for="prioritat in llistaPrioritats" :value="prioritat">

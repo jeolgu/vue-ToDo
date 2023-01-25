@@ -51,22 +51,31 @@
                 <tr>
                     <th>Descripció</th>
                     <th>Creació</th>
-                    <th>Temps aprox. creació</th>
+                    <th>Temps aprox.<br>creació</th>
                     <th>Prioritat</th>
                     <th>Canviar prioritat</th>
+                    <th>Completar<br>Activar</th>
                     <th>El·liminar</th>
                 </tr>
                 <tr v-for="(tasca, indice) in llistaTasques">
-                    <td>{{ tasca.descripcio }}</td>
-                    <td>{{ formatejarDates(tasca.creacio) }}</td>
+                    <td class="descripcio">
+                        <span v-bind:class="{completada: tasca.completada}">
+                            {{ tasca.descripcio }}
+                        </span>
+                    </td>
+                    <td class="creacio">{{ formatejarDates(tasca.creacio) }}</td>
                     <td>{{ minutsDesdeInici(tasca.creacio) }}</td>
                     <td>{{ tasca.prioritat }}</td>
                     <td>
-                        <button class="btn btn-danger" @click="cambiarPrioritat(tasca.id, 'alta')">Alta</button>
-                        <button class="btn btn-warning" @click="cambiarPrioritat(tasca.id, 'mitja')">Mitja</button>
-                        <button class="btn btn-success" @click="cambiarPrioritat(tasca.id, 'baixa')">Baixa</button>
+                        <button class="btn btn-danger btn-sm" @click="cambiarPrioritat(tasca.id, 'alta')">Alta</button>
+                        <button class="btn btn-warning btn-sm" @click="cambiarPrioritat(tasca.id, 'mitja')">Mitja</button>
+                        <button class="btn btn-success btn-sm" @click="cambiarPrioritat(tasca.id, 'baixa')">Baixa</button>
                     </td>
-                    <td><button class="btn btn-dark" @click="esborrarTasca(tasca.id)">El·liminar</button></td>
+                    <td>
+                        <button class="btn btn-info btn-sm" v-if="!tasca.completada" @click="canviarEstat(tasca.id, true)">Completar</button>
+                        <button class="btn btn-info btn-sm" v-if="tasca.completada" @click="canviarEstat(tasca.id, false)">Activar</button>
+                    </td>
+                    <td><button class="btn btn-dark btn-sm" @click="esborrarTasca(tasca.id)">El·liminar</button></td>
                 </tr>                
                 </table>
             </div>
@@ -76,7 +85,7 @@
         </template>
 
         <div>
-            Total tasques: {{ totalTasques }}. Completades: {{ totalTasquesCompletades }}
+            Total tasques: {{ totalTasques }}. Completades: {{ totalTasquesCompletades }} {{ filtrat }}
         </div>
     </div>
 </body>

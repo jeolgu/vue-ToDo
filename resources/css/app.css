@@ -56,7 +56,8 @@ td {
 }
 
 td {
-    min-width: 200px;
+    min-width: 125px;
+    max-width: 250px;
 }
 
 th {
@@ -65,7 +66,11 @@ th {
 
 td,
 th {
-    height: 50px;
+    height: 60px;
+}
+
+td.descripcio {
+    padding: 0px 5px;
 }
 
 .header-tasques {
@@ -88,4 +93,13 @@ td button:first-child {
 
 button {
     margin-right: 25px;
+}
+
+.completada {
+    text-decoration: line-through;
+    color: blue;
+}
+
+.creacio {
+    width: 125px;
 }

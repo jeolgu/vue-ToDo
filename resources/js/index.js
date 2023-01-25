@@ -3,6 +3,7 @@ const Counter = {
         return {
             totalTasques: 0,
             totalTasquesCompletades: 0,
+            filtrat: "",
             llistaTasques: [],
             filtre: "",
             opcionsFiltre: [
@@ -66,11 +67,20 @@ const Counter = {
         filtrarLlistat() {
             // PER A FILTRAR EL LLISTAT ENS BASAREM EN EL LOCALSTORAGE AIXÍ CREAREM UN NOU VECTOR (VALORS) A MOSTRAR.
             let arrLlista = JSON.parse(localStorage.llistaTasques);
-            if (this.filtre === 1 || this.filtre === 4) return this.llistaTasques = arrLlista;
+            if (this.filtre === 1 || this.filtre === 4) {
+                this.llistaTasques = arrLlista;
+                this.totalTasques = this.llistaTasques.length;
+                this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
+                this.filtrat = "";
+                return;
+            }
 
             let filtrat = (this.filtre === 2) ? false : true; // respecte a les completades
 
-            return this.llistaTasques = arrLlista.filter(function(a) { if (a.completada == filtrat) return true; });
+            this.llistaTasques = arrLlista.filter(function(a) { if (a.completada == filtrat) return true; });
+            this.totalTasques = this.llistaTasques.length;
+            this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
+            this.filtrat = " (llista filtrada)";
         },
         eliminarCompletades() {
             // PER A EL·LIMINAR AGAFAREM EL QUE TENIM EN EL LOCALSTORAGE I EL REFAREM SENSE LES COMPLETADES.
@@ -80,6 +90,9 @@ const Counter = {
 
             this.llistaTasques = novaLLista;
             localStorage.llistaTasques = JSON.stringify(novaLLista);
+
+            this.totalTasques = this.llistaTasques.length;
+            this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
         },
         filtrarTasquesDescripcio() {
             // PER A FILTRAR PER TEXT UTILITZAREM CON ABANS EL LOCALSTORAGE I DE AHI CONFORMAREM EL NOU LLISTAT 
@@ -88,6 +101,9 @@ const Counter = {
             let novaLLista = arrLlista.filter(function(a) { if (a.descripcio.includes(filtre)) return true; });
 
             this.llistaTasques = novaLLista;
+            this.totalTasques = this.llistaTasques.length;
+            this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
+            this.filtrat = (this.filtreText != "") ? " (llista filtrada)" : "";
         },
         esborrarTasca(id) {
             // PER  ELIMINAR FILTRAREM TOTS ELS QUE NO COINCIDISQUEN AMB EL id QUE ENVIEM. (D'AQUESTA MANERA FEM UN BORRAT SIMULAT)
@@ -97,6 +113,8 @@ const Counter = {
             this.llistaTasques = novaLLista;
             // GUARDEM EN EL LOCALSTORAGE PER A QUE "GUARDE EL BORRAT"
             localStorage.llistaTasques = JSON.stringify(novaLLista);
+            this.totalTasques = this.llistaTasques.length;
+            this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
         },
         cambiarPrioritat(id, novaPrioritat) {
 
@@ -110,6 +128,22 @@ const Counter = {
             this.llistaTasques = novaLlista;
             localStorage.llistaTasques = JSON.stringify(novaLlista);
             this.reordenarLlistat(novaLlista);
+        },
+        canviarEstat(id, completada) {
+
+            let novaLlista = this.llistaTasques;
+            novaLlista.forEach(function(a) {
+                if (a.id === id) {
+                    a.completada = completada;
+                }
+            });
+
+            this.llistaTasques = novaLlista;
+            localStorage.llistaTasques = JSON.stringify(novaLlista);
+            this.reordenarLlistat(novaLlista);
+
+            this.totalTasques = this.llistaTasques.length;
+            this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
         }
     }
 }
