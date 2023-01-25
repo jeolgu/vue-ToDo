@@ -15,8 +15,12 @@ const Tasques = {
             let tasques = [];
             if (localStorage.llistaTasques) tasques = JSON.parse(localStorage.llistaTasques);
 
+            let llistaIds = tasques.map(function(a) { return a.id; });
+            let maxId = Math.max(...llistaIds);
+            let nouId = maxId + 1;
+
             tasques.push({
-                id: (tasques.length + 1),
+                id: nouId,
                 descripcio: this.descripcio,
                 creacio: new Date(),
                 prioritat: this.prioritat,

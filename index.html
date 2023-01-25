@@ -51,20 +51,22 @@
                 <tr>
                     <th>Descripció</th>
                     <th>Creació</th>
+                    <th>Temps aprox. creació</th>
                     <th>Prioritat</th>
                     <th>Canviar prioritat</th>
                     <th>El·liminar</th>
                 </tr>
-                <tr v-for="tasca in llistaTasques">
+                <tr v-for="(tasca, indice) in llistaTasques">
                     <td>{{ tasca.descripcio }}</td>
                     <td>{{ formatejarDates(tasca.creacio) }}</td>
+                    <td>{{ minutsDesdeInici(tasca.creacio) }}</td>
                     <td>{{ tasca.prioritat }}</td>
                     <td>
-                        <button class="btn btn-danger">Alta</button>
-                        <button class="btn btn-warning">Mitja</button>
-                        <button class="btn btn-success">Baixa</button>
+                        <button class="btn btn-danger" @click="cambiarPrioritat(tasca.id, 'alta')">Alta</button>
+                        <button class="btn btn-warning" @click="cambiarPrioritat(tasca.id, 'mitja')">Mitja</button>
+                        <button class="btn btn-success" @click="cambiarPrioritat(tasca.id, 'baixa')">Baixa</button>
                     </td>
-                    <td><button class="btn btn-dark">El·liminar</button></td>
+                    <td><button class="btn btn-dark" @click="esborrarTasca(tasca.id)">El·liminar</button></td>
                 </tr>                
                 </table>
             </div>
