@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App ToDo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="./resources/js/index.js"></script>
+    <link rel="stylesheet" href="./resources/css/app.css">
+    <link rel="stylesheet" href="./resources/css/menu.css">
+</head>
+
+<body>
+    <header>
+        <nav class="menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./tasques.html">Crear Tasca</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="app">
+        <!-- SELECTOR PER A MOSTRAR TASQUES ACTIVES, COMPLETADES O TOTES -->
+        <div>
+            <div class="header-tasques">
+                <label for="mostrar">Filtrar llistat tasques </label>
+                <select id="mostrar" class="form-select" v-model="filtre" @change="filtrarLlistat">
+                <option v-for="filtre in opcionsFiltre" :value="filtre.id">
+                    {{ filtre.nom }}
+                </option>
+            </select>
+            </div>
+            <div class="header-tasques">
+                <label for="filtre-text">Filtrar llistat tasques </label>
+                <input type="text" id="filtre-text" class="form-control" v-model="filtreText" @keyup="filtrarTasquesDescripcio" />
+            </div>
+            <div class="header-tasques centrat">
+                <button class="btn btn-primary" @click="eliminarCompletades">El·liminar totes les tasques completades</button>
+            </div>
+        </div>
+        <template v-if="llistaTasques.length">
+            <div class="tasca">
+                <h2>Llistat TASQUES</h2>
+                <table border="2">
+                <tr>
+                    <th>Descripció</th>
+                    <th>Creació</th>
+                    <th>Prioritat</th>
+                    <th>Canviar prioritat</th>
+                    <th>El·liminar</th>
+                </tr>
+                <tr v-for="tasca in llistaTasques">
+                    <td>{{ tasca.descripcio }}</td>
+                    <td>{{ formatejarDates(tasca.creacio) }}</td>
+                    <td>{{ tasca.prioritat }}</td>
+                    <td>
+                        <button class="btn btn-danger">Alta</button>
+                        <button class="btn btn-warning">Mitja</button>
+                        <button class="btn btn-success">Baixa</button>
+                    </td>
+                    <td><button class="btn btn-dark">El·liminar</button></td>
+                </tr>                
+                </table>
+            </div>
+        </template>
+        <template v-else>
+            <h2>No existeixen tasques</h2>
+        </template>
+
+        <div>
+            Total tasques: {{ totalTasques }}. Completades: {{ totalTasquesCompletades }}
+        </div>
+    </div>
+</body>
+
+</html>
