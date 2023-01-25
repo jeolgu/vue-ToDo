@@ -17,13 +17,13 @@ const Counter = {
     mounted() {
         let tasques = [];
         if (localStorage.llistaTasques) tasques = JSON.parse(localStorage.llistaTasques);
-        this.totalTasques = this.llistaTasques.length;
-        this.totalTasquesCompletades = this.llistaTasques.filter(function(a) { if (a.completada) return true; }).length;
-
         if (tasques.length == 0) {
             this.llistaTasques = tasques;
             return;
         }
+
+        this.totalTasques = tasques.length;
+        this.totalTasquesCompletades = tasques.filter(function(a) { if (a.completada) return true; }).length;
 
         // CALCULEM LA ORDENACIÓ FILTRAREM PRIMER  PER CADA PRIORITAT I CREAREM UN VECTOR FINAL
         this.reordenarLlistat(tasques);
